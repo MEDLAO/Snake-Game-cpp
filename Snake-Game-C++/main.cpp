@@ -2,7 +2,7 @@
 //  main.cpp
 //  Snake-Game-C++
 //
-//  Created by Sofiane Medhouny Laouina on 31/12/2024.
+//  Created by MEDLAO on 31/12/2024.
 //
 
 #include <iostream>
