@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BF1AD63C2D24755D00EA1CD8 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF1AD63B2D24755D00EA1CD8 /* main.cpp */; };
+		BF7E588F2D24856900AD9B47 /* libraylib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF7E588E2D24856900AD9B47 /* libraylib.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +26,7 @@
 /* Begin PBXFileReference section */
 		BF1AD6382D24755D00EA1CD8 /* Snake-Game-C++ */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Snake-Game-C++"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF1AD63B2D24755D00EA1CD8 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		BF7E588E2D24856900AD9B47 /* libraylib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libraylib.a; path = ../../../../../usr/local/Cellar/raylib/5.0/lib/libraylib.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +34,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF7E588F2D24856900AD9B47 /* libraylib.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +46,7 @@
 			children = (
 				BF1AD63A2D24755D00EA1CD8 /* Snake-Game-C++ */,
 				BF1AD6392D24755D00EA1CD8 /* Products */,
+				BF1AD6422D247BB000EA1CD8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -60,6 +64,14 @@
 				BF1AD63B2D24755D00EA1CD8 /* main.cpp */,
 			);
 			path = "Snake-Game-C++";
+			sourceTree = "<group>";
+		};
+		BF1AD6422D247BB000EA1CD8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BF7E588E2D24856900AD9B47 /* libraylib.a */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -245,6 +257,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/raylib/5.0/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -253,6 +270,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/raylib/5.0/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
