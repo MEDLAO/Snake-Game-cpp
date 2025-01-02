@@ -26,6 +26,18 @@ public:
 };
 
 int main(int argc, const char * argv[]) {
- 
+    const int screen_width = 1280;
+    const int screen_height = 800;
+    
+    InitWindow(screen_width, screen_height, "Snake Game C++");
+    SetTargetFPS(60);
+    
+    while (WindowShouldClose() == false) {
+        BeginDrawing();
+        
+        ClearBackground(BLUE);
+        EndDrawing();
+    }
+    
     return 0;
 }
