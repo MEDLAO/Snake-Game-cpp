@@ -21,6 +21,8 @@ const int rows = screen_height / grid_size;
 class Snake{
 private:
     std::deque<std::pair<int, int>> snake;
+    float speedX;
+    int speedY;
 public:
     Snake();
     void draw(){
@@ -29,6 +31,13 @@ public:
             int pixelY = segment.second * grid_size;
             DrawRectangle(pixelX, pixelY, grid_size, grid_size, GREEN);
         }
+    }
+    void update(){
+        int newX = snake.front().first + speedX;
+        int newY = snake.front().second + speedY;
+        
+        snake.push_front({newX, newY});
+        snake.pop_back();
     }
 };
 
@@ -39,7 +48,7 @@ public:
     
 };
 
-Snake::Snake() {
+Snake::Snake() : speedX(1), speedY(0) {
     int startX = columns / 2;
     int startY = rows / 2;
     
@@ -58,10 +67,23 @@ int main(int argc, const char * argv[]) {
     InitWindow(screen_width, screen_height, "Snake Game C++");
     SetTargetFPS(60);
     
+    float updateInterval = 0.2f; // Time between snake updates
+    float elapsedTime = 0.0f; // Accumulator for delta time
+    
+    
     while (WindowShouldClose() == false) {
-        BeginDrawing();
-        ClearBackground(BLUE);
         
+        float deltaTime = GetFrameTime();
+        elapsedTime += deltaTime;
+        
+        if (elapsedTime >= updateInterval) {
+            snake.update(); // Move the snake
+            elapsedTime = 0.0f; // Reset elapsed time
+        }
+        
+        BeginDrawing();
+        
+        ClearBackground(BLUE);
         snake.draw();
         
         EndDrawing();
