@@ -21,7 +21,7 @@ const int rows = screen_height / grid_size;
 class Snake{
 private:
     std::deque<std::pair<int, int>> snake;
-    float speedX;
+    int speedX;
     int speedY;
 public:
     Snake();
