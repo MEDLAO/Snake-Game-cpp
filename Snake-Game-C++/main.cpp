@@ -36,6 +36,20 @@ public:
         int newX = snake.front().first + speedX;
         int newY = snake.front().second + speedY;
         
+        if (newX < 0) {
+            newX = columns - 1;
+        }
+        else if (newX >= columns){
+            newX = 0;
+        }
+        
+        if (newY < 0) {
+            newY = rows - 1;
+        }
+        else if (newY >= rows){
+            newY = 0;
+        }
+        
         snake.push_front({newX, newY});
         snake.pop_back();
     }
@@ -67,7 +81,7 @@ int main(int argc, const char * argv[]) {
     InitWindow(screen_width, screen_height, "Snake Game C++");
     SetTargetFPS(60);
     
-    float updateInterval = 0.2f; // Time between snake updates
+    float updateInterval = 0.1f; // Time between snake updates
     float elapsedTime = 0.0f; // Accumulator for delta time
     
     
