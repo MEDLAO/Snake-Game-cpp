@@ -33,9 +33,12 @@ public:
         }
     }
     void update(){
+        handleInput();
+        
         int newX = snake.front().first + speedX;
         int newY = snake.front().second + speedY;
         
+        // Wrapping screen logic
         if (newX < 0) {
             newX = columns - 1;
         }
@@ -52,6 +55,25 @@ public:
         
         snake.push_front({newX, newY});
         snake.pop_back();
+    }
+    
+    void handleInput(){
+        if (IsKeyDown(KEY_RIGHT) && speedX != -1) {
+            speedX = 1;
+            speedY = 0;
+        }
+        else if (IsKeyDown(KEY_LEFT) && speedX != 1) {
+            speedX = -1;
+            speedY = 0;
+        }
+        else if (IsKeyDown(KEY_DOWN) && speedY != -1) {
+            speedX = 0;
+            speedY = 1;
+        }
+        else if (IsKeyDown(KEY_UP) && speedY != 1) {
+            speedX = 0;
+            speedY = -1;
+        }
     }
 };
 
@@ -97,7 +119,7 @@ int main(int argc, const char * argv[]) {
         
         BeginDrawing();
         
-        ClearBackground(BLUE);
+        ClearBackground(BLACK);
         snake.draw();
         
         EndDrawing();
