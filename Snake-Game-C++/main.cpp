@@ -25,6 +25,12 @@ private:
     int speedY;
 public:
     Snake();
+    
+    // Getter
+    const std::deque<std::pair<int, int>>& getSnake() const{
+        return snake;
+    }
+    
     void draw(){
         for (const auto& segment : snake) {
             int pixelX = segment.first * grid_size;
@@ -77,13 +83,39 @@ public:
     }
 };
 
+Snake snake;
 
 class Food{
 private:
+    int x, y;
 public:
+    void generate_food(){
+        bool overlaps;
+        do {
+            // Generate random coordinates within the grid boundaries
+            x = GetRandomValue(0, columns - 1);
+            y = GetRandomValue(0, rows - 1);
+            
+            overlaps = false;
+            for (const auto& segment : snake.getSnake()) {
+                if (segment.first == x && segment.second == y) {
+                    overlaps = true;
+                    break;
+                }
+            }
+        } while (overlaps);
+    }
     
+    void draw(){
+        int pixelX = x * grid_size;
+        int pixelY = y * grid_size;
+        DrawRectangle(pixelX, pixelY , grid_size, grid_size, YELLOW);
+    }
 };
 
+Food food;
+
+// Initialize Snake with default speed and starting segments
 Snake::Snake() : speedX(1), speedY(0) {
     int startX = columns / 2;
     int startY = rows / 2;
@@ -93,10 +125,6 @@ Snake::Snake() : speedX(1), speedY(0) {
         snake.push_back({startX - i, startY});
     }
 }
-
-
-Snake snake;
-
 
 int main(int argc, const char * argv[]) {
     
@@ -117,10 +145,13 @@ int main(int argc, const char * argv[]) {
             elapsedTime = 0.0f; // Reset elapsed time
         }
         
+        food.generate_food();
+        
         BeginDrawing();
         
         ClearBackground(BLACK);
         snake.draw();
+        food.draw();
         
         EndDrawing();
     }
