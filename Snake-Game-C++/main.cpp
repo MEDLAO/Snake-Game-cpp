@@ -38,6 +38,7 @@ public:
             DrawRectangle(pixelX, pixelY, grid_size, grid_size, GREEN);
         }
     }
+    
     void update(){
         handleInput();
         
@@ -81,6 +82,17 @@ public:
             speedY = -1;
         }
     }
+    
+    bool ateFood();
+    
+    bool checkAndGrow(){
+        if (ateFood()) {
+            const auto& tail = snake.back();
+            snake.push_back({tail.first, tail.second});
+            return true;
+        }
+        return false;
+    }
 };
 
 Snake snake;
@@ -89,7 +101,17 @@ class Food{
 private:
     int x, y;
 public:
-    void generate_food(){
+    // Getters
+    int getX() const{
+        return x;
+    }
+    
+    int getY() const{
+        return y;
+    }
+    
+    
+    void generateFood(){
         bool overlaps;
         do {
             // Generate random coordinates within the grid boundaries
@@ -126,6 +148,11 @@ Snake::Snake() : speedX(1), speedY(0) {
     }
 }
 
+bool Snake::ateFood(){
+    return snake.front().first == food.getX() && snake.front().second == food.getY();
+}
+
+
 int main(int argc, const char * argv[]) {
     
     InitWindow(screen_width, screen_height, "Snake Game C++");
@@ -142,10 +169,14 @@ int main(int argc, const char * argv[]) {
         
         if (elapsedTime >= updateInterval) {
             snake.update(); // Move the snake
+            if (snake.checkAndGrow()) {
+                food.generateFood();
+            }
+            
             elapsedTime = 0.0f; // Reset elapsed time
         }
         
-        food.generate_food();
+        
         
         BeginDrawing();
         
