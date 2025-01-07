@@ -93,6 +93,14 @@ public:
         }
         return false;
     }
+    
+    void selfCollision(){
+        for (const auto& segment : snake) {
+            if (snake.front().first == segment.first && snake.front().second == segment.second) {
+                reset();
+            }
+        }
+    }
 };
 
 Snake snake;
