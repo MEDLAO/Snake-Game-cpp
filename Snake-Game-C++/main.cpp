@@ -32,7 +32,6 @@ public:
     }
     
     void init(){
-        snake.clear();
         
         speedX = 1;
         speedY = 0;
@@ -75,10 +74,10 @@ public:
             newY = 0;
         }
         
-        selfCollision();
-        
         snake.push_front({newX, newY});
         snake.pop_back();
+        
+        selfCollision();
     }
     
     void handleInput(){
@@ -112,6 +111,7 @@ public:
     }
     
     void reset(){
+        snake.clear();
         init();
     }
     
