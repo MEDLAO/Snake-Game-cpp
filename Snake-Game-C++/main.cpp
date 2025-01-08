@@ -31,6 +31,21 @@ public:
         return snake;
     }
     
+    void init(){
+        snake.clear();
+        
+        speedX = 1;
+        speedY = 0;
+        
+        int startX = columns / 2;
+        int startY = rows / 2;
+        
+        // Add three initial segments
+        for (int i = 0; i < 3; i++) {
+            snake.push_back({startX - i, startY});
+        }
+    }
+    
     void draw(){
         for (const auto& segment : snake) {
             int pixelX = segment.first * grid_size;
@@ -59,6 +74,8 @@ public:
         else if (newY >= rows){
             newY = 0;
         }
+        
+        selfCollision();
         
         snake.push_front({newX, newY});
         snake.pop_back();
@@ -94,9 +111,17 @@ public:
         return false;
     }
     
+    void reset(){
+        init();
+    }
+    
     void selfCollision(){
-        for (const auto& segment : snake) {
-            if (snake.front().first == segment.first && snake.front().second == segment.second) {
+        // Get the head of the snake
+        const auto& head = snake.front();
+        
+        // Iterate over the body excluding the head
+        for (auto it = snake.begin() + 1; it != snake.end(); ++it) {
+            if (head.first == it->first && head.second == it->second) {
                 reset();
             }
         }
@@ -146,14 +171,8 @@ public:
 Food food;
 
 // Initialize Snake with default speed and starting segments
-Snake::Snake() : speedX(1), speedY(0) {
-    int startX = columns / 2;
-    int startY = rows / 2;
-    
-    // Add three initial segments
-    for (int i = 0; i < 3; i++) {
-        snake.push_back({startX - i, startY});
-    }
+Snake::Snake(){
+    init();
 }
 
 bool Snake::ateFood(){
