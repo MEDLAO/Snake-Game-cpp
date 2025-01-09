@@ -8,6 +8,7 @@
 #include <iostream>
 #include <deque>
 #include <utility>
+#include <set>
 #include <raylib.h>
 
 
@@ -16,6 +17,7 @@ const int screen_height = 800;
 const int grid_size = 20; // Size of each cell
 const int columns = screen_width / grid_size;
 const int rows = screen_height / grid_size;
+std::set<std::pair<int, int>> occupiedPositions;
 
 
 class Snake{
@@ -33,7 +35,7 @@ public:
     
     void init(){
         
-        speedX = 1;
+        speedX = 0;
         speedY = 0;
         
         int startX = columns / 2;
@@ -42,6 +44,8 @@ public:
         // Add three initial segments
         for (int i = 0; i < 3; i++) {
             snake.push_back({startX - i, startY});
+            occupiedPositions.insert({startX - i, startY});
+            
         }
     }
     
@@ -74,8 +78,11 @@ public:
             newY = 0;
         }
         
+        auto tail = snake.back();
         snake.push_front({newX, newY});
+        occupiedPositions.insert({newX, newY});
         snake.pop_back();
+        occupiedPositions.erase(tail);
         
         selfCollision();
     }
@@ -101,17 +108,18 @@ public:
     
     bool ateFood();
     
-    bool checkAndGrow(){
+    void checkAndGrow(){
         if (ateFood()) {
             const auto& tail = snake.back();
             snake.push_back({tail.first, tail.second});
-            return true;
+            occupiedPositions.insert(tail);
+            
         }
-        return false;
     }
     
     void reset(){
         snake.clear();
+        occupiedPositions.clear();
         init();
     }
     
@@ -132,39 +140,32 @@ Snake snake;
 
 class Food{
 private:
-    int x, y;
+    const int foodCount = 15;
+    
 public:
-    // Getters
-    int getX() const{
-        return x;
-    }
-    
-    int getY() const{
-        return y;
-    }
-    
+    std::set<std::pair<int, int>> foodPositions;
     
     void generateFood(){
-        bool overlaps;
-        do {
-            // Generate random coordinates within the grid boundaries
-            x = GetRandomValue(0, columns - 1);
-            y = GetRandomValue(0, rows - 1);
+        while (foodPositions.size() < foodCount) {
+            int x = GetRandomValue(0, columns - 1);
+            int y = GetRandomValue(0, rows - 1);
             
-            overlaps = false;
-            for (const auto& segment : snake.getSnake()) {
-                if (segment.first == x && segment.second == y) {
-                    overlaps = true;
-                    break;
-                }
+            // Ensure no overlap with snake or existing food
+            if (occupiedPositions.find({x, y}) == occupiedPositions.end()) {
+                foodPositions.insert({x, y});
+                occupiedPositions.insert({x, y});
             }
-        } while (overlaps);
+        }
     }
     
     void draw(){
-        int pixelX = x * grid_size;
-        int pixelY = y * grid_size;
-        DrawRectangle(pixelX, pixelY , grid_size, grid_size, YELLOW);
+        for (const auto& pos : foodPositions) {
+            int pixelX = pos.first * grid_size;
+            int pixelY = pos.second * grid_size;
+            DrawRectangle(pixelX, pixelY , grid_size, grid_size, YELLOW);
+        }
+       
+        
     }
 };
 
@@ -176,7 +177,14 @@ Snake::Snake(){
 }
 
 bool Snake::ateFood(){
-    return snake.front().first == food.getX() && snake.front().second == food.getY();
+    const auto& head = snake.front(); // Read-only access
+    for (auto it = food.foodPositions.begin(); it != food.foodPositions.end(); ++it) {
+        if (*it == head) {
+            food.foodPositions.erase(it);
+            return true;
+        }
+    }
+    return false;
 }
 
 
@@ -188,6 +196,7 @@ int main(int argc, const char * argv[]) {
     float updateInterval = 0.1f; // Time between snake updates
     float elapsedTime = 0.0f; // Accumulator for delta time
     
+    food.generateFood();
     
     while (WindowShouldClose() == false) {
         
@@ -196,14 +205,10 @@ int main(int argc, const char * argv[]) {
         
         if (elapsedTime >= updateInterval) {
             snake.update(); // Move the snake
-            if (snake.checkAndGrow()) {
-                food.generateFood();
-            }
+            snake.checkAndGrow();
             
             elapsedTime = 0.0f; // Reset elapsed time
         }
-        
-        
         
         BeginDrawing();
         
