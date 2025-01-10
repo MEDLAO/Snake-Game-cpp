@@ -141,6 +141,7 @@ Snake snake;
 class Food{
 private:
     const int foodCount = 15;
+    const std::vector<Color> colors = {YELLOW, RED, BLUE};
     
 public:
     std::set<std::pair<int, int>> foodPositions;
@@ -158,14 +159,18 @@ public:
         }
     }
     
+    Color chooseColor(int idx){
+        return colors[idx % colors.size()];
+    }
+    
     void draw(){
+        int i = 0;
         for (const auto& pos : foodPositions) {
             int pixelX = pos.first * grid_size;
             int pixelY = pos.second * grid_size;
-            DrawRectangle(pixelX, pixelY , grid_size, grid_size, YELLOW);
+            DrawRectangle(pixelX, pixelY , grid_size, grid_size, chooseColor(i));
+            i++;
         }
-       
-        
     }
 };
 
