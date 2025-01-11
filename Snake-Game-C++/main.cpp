@@ -9,6 +9,7 @@
 #include <deque>
 #include <utility>
 #include <set>
+#include <unordered_map>
 #include <raylib.h>
 
 
@@ -19,6 +20,14 @@ const int columns = screen_width / grid_size;
 const int rows = screen_height / grid_size;
 std::set<std::pair<int, int>> occupiedPositions;
 
+
+// Custom hash function for std::pair
+struct pair_hash {
+    template <class T1, class T2>
+    std::size_t operator()(const std::pair<T1, T2>& pair) const {
+        return std::hash<T1>()(pair.first) ^ (std::hash<T2>()(pair.second) << 1);
+    }
+};
 
 class Snake{
 private:
@@ -108,6 +117,8 @@ public:
     
     bool ateFood();
     
+    void reset();
+    
     void checkAndGrow(){
         if (ateFood()) {
             const auto& tail = snake.back();
@@ -117,11 +128,6 @@ public:
         }
     }
     
-    void reset(){
-        snake.clear();
-        occupiedPositions.clear();
-        init();
-    }
     
     void selfCollision(){
         // Get the head of the snake
@@ -140,35 +146,33 @@ Snake snake;
 
 class Food{
 private:
-    const int foodCount = 15;
+    const int foodCount = 120;
     const std::vector<Color> colors = {YELLOW, RED, BLUE};
     
 public:
-    std::set<std::pair<int, int>> foodPositions;
+    std::unordered_map<std::pair<int, int>, Color, pair_hash> foodItems;
     
     void generateFood(){
-        while (foodPositions.size() < foodCount) {
+        int colorIndex = 0;
+        while (foodItems.size() < foodCount) {
             int x = GetRandomValue(0, columns - 1);
             int y = GetRandomValue(0, rows - 1);
             
             // Ensure no overlap with snake or existing food
             if (occupiedPositions.find({x, y}) == occupiedPositions.end()) {
-                foodPositions.insert({x, y});
+                foodItems[{x, y}] = colors[colorIndex % colors.size()];
                 occupiedPositions.insert({x, y});
+                colorIndex++; // Cycle through colors
             }
         }
     }
     
-    Color chooseColor(int idx){
-        return colors[idx % colors.size()];
-    }
-    
     void draw(){
         int i = 0;
-        for (const auto& pos : foodPositions) {
-            int pixelX = pos.first * grid_size;
-            int pixelY = pos.second * grid_size;
-            DrawRectangle(pixelX, pixelY , grid_size, grid_size, chooseColor(i));
+        for (const auto& [position, color] : foodItems) {
+            int pixelX = position.first * grid_size;
+            int pixelY = position.second * grid_size;
+            DrawRectangle(pixelX, pixelY , grid_size, grid_size, color);
             i++;
         }
     }
@@ -183,13 +187,19 @@ Snake::Snake(){
 
 bool Snake::ateFood(){
     const auto& head = snake.front(); // Read-only access
-    for (auto it = food.foodPositions.begin(); it != food.foodPositions.end(); ++it) {
-        if (*it == head) {
-            food.foodPositions.erase(it);
+    for (auto it = food.foodItems.begin(); it != food.foodItems.end(); ++it) {
+        if (it->first == head) { // Compare the key (position) with the snake's head
+            food.foodItems.erase(it);
             return true;
         }
     }
     return false;
+}
+
+void Snake::reset(){
+    snake.clear();
+    occupiedPositions.clear();
+    init();
 }
 
 
