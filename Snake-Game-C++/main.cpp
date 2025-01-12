@@ -150,6 +150,7 @@ private:
     const std::vector<Color> colors = {YELLOW, RED, BLUE};
     
 public:
+    Color lastFoodColor = BLACK;
     std::unordered_map<std::pair<int, int>, Color, pair_hash> foodItems;
     
     void generateFood(){
@@ -189,8 +190,17 @@ bool Snake::ateFood(){
     const auto& head = snake.front(); // Read-only access
     for (auto it = food.foodItems.begin(); it != food.foodItems.end(); ++it) {
         if (it->first == head) { // Compare the key (position) with the snake's head
-            food.foodItems.erase(it);
-            return true;
+            if (it->second.r == food.lastFoodColor.r &&
+                it->second.g == food.lastFoodColor.g &&
+                it->second.b == food.lastFoodColor.b &&
+                it->second.a == food.lastFoodColor.a) {
+                reset();
+                return false;
+            } else {
+                food.lastFoodColor = it->second;
+                food.foodItems.erase(it);
+                return true;
+            }
         }
     }
     return false;
