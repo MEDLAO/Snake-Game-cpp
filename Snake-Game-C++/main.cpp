@@ -152,6 +152,7 @@ private:
 public:
     Color lastFoodColor = BLACK;
     std::unordered_map<std::pair<int, int>, Color, pair_hash> foodItems;
+    std::unordered_map<std::pair<int, int>, Color, pair_hash> initialFoodItems;
     
     void generateFood(){
         int colorIndex = 0;
@@ -161,10 +162,20 @@ public:
             
             // Ensure no overlap with snake or existing food
             if (occupiedPositions.find({x, y}) == occupiedPositions.end()) {
-                foodItems[{x, y}] = colors[colorIndex % colors.size()];
+                Color color = colors[colorIndex % colors.size()];
+                foodItems[{x, y}] = color;
+                initialFoodItems[{x, y}] = color; // Store in the initial state
                 occupiedPositions.insert({x, y});
                 colorIndex++; // Cycle through colors
             }
+        }
+    }
+    
+    void reset() {
+        foodItems.clear();
+        for (const auto& item : initialFoodItems) {
+            foodItems[item.first] = item.second;
+            occupiedPositions.insert(item.first);
         }
     }
     
@@ -210,6 +221,7 @@ void Snake::reset(){
     snake.clear();
     occupiedPositions.clear();
     init();
+    food.reset();
 }
 
 
