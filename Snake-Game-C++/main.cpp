@@ -12,6 +12,11 @@
 #include <unordered_map>
 #include <raylib.h>
 
+Sound yellowSound = LoadSound("yellow.wav");
+Sound redSound = LoadSound("red.wav");
+Sound blueSound = LoadSound("blue.wav");
+Sound failSound = LoadSound("fail.wav");
+
 
 const int screen_width = 1280;
 const int screen_height = 800;
@@ -172,6 +177,7 @@ public:
     }
     
     void reset() {
+        lastFoodColor = BLACK;
         foodItems.clear();
         for (const auto& item : initialFoodItems) {
             foodItems[item.first] = item.second;
