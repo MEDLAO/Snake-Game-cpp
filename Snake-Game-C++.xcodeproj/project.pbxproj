@@ -24,6 +24,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		BF01918B2D37F1E6009A5B0C /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		BF1AD6382D24755D00EA1CD8 /* Snake-Game-C++ */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Snake-Game-C++"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF1AD63B2D24755D00EA1CD8 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		BF7E588E2D24856900AD9B47 /* libraylib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libraylib.a; path = ../../../../../usr/local/Cellar/raylib/5.0/lib/libraylib.a; sourceTree = "<group>"; };
@@ -44,6 +45,7 @@
 		BF1AD62F2D24755D00EA1CD8 = {
 			isa = PBXGroup;
 			children = (
+				BF01918B2D37F1E6009A5B0C /* Media.xcassets */,
 				BF1AD63A2D24755D00EA1CD8 /* Snake-Game-C++ */,
 				BF1AD6392D24755D00EA1CD8 /* Products */,
 				BF1AD6422D247BB000EA1CD8 /* Frameworks */,

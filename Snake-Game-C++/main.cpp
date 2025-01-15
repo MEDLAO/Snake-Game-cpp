@@ -12,11 +12,6 @@
 #include <unordered_map>
 #include <raylib.h>
 
-Sound yellowSound = LoadSound("yellow.wav");
-Sound redSound = LoadSound("red.wav");
-Sound blueSound = LoadSound("blue.wav");
-Sound failSound = LoadSound("fail.wav");
-
 
 const int screen_width = 1280;
 const int screen_height = 800;
@@ -33,6 +28,11 @@ struct pair_hash {
         return std::hash<T1>()(pair.first) ^ (std::hash<T2>()(pair.second) << 1);
     }
 };
+
+// Helper function to compare colors
+bool areColorsEqual(const Color& c1, const Color& c2){
+    return c1.r == c2.r && c1.g == c2.g && c1.b == c2.b && c1.a == c2.a;
+}
 
 class Snake{
 private:
@@ -207,15 +207,22 @@ bool Snake::ateFood(){
     const auto& head = snake.front(); // Read-only access
     for (auto it = food.foodItems.begin(); it != food.foodItems.end(); ++it) {
         if (it->first == head) { // Compare the key (position) with the snake's head
-            if (it->second.r == food.lastFoodColor.r &&
-                it->second.g == food.lastFoodColor.g &&
-                it->second.b == food.lastFoodColor.b &&
-                it->second.a == food.lastFoodColor.a) {
+            if (areColorsEqual(it->second, food.lastFoodColor)){
                 reset();
                 return false;
             } else {
                 food.lastFoodColor = it->second;
                 food.foodItems.erase(it);
+                
+                if (areColorsEqual(it->second, YELLOW)) {
+                    PlaySound(yellowSound);
+                } else if (areColorsEqual(it->second, RED)){
+                    PlaySound(redSound);
+                }else if (areColorsEqual(it->second, BLUE)) {
+                    PlaySound(blueSound);
+                }
+                   
+                else
                 return true;
             }
         }
@@ -234,7 +241,14 @@ void Snake::reset(){
 int main(int argc, const char * argv[]) {
     
     InitWindow(screen_width, screen_height, "Snake Game C++");
+    InitAudioDevice();
     SetTargetFPS(60);
+   
+    Sound yellowSound = LoadSound("sound1.wav");
+    Sound redSound = LoadSound("sound2.wav");
+    Sound blueSound = LoadSound("sound3.wav");
+    Sound failSound = LoadSound("fail.wav");
+    Sound backgroundSound = LoadSound("background.wav");
     
     float updateInterval = 0.1f; // Time between snake updates
     float elapsedTime = 0.0f; // Accumulator for delta time
@@ -262,5 +276,12 @@ int main(int argc, const char * argv[]) {
         EndDrawing();
     }
     
+    UnloadSound(yellowSound);
+    UnloadSound(redSound);
+    UnloadSound(blueSound);
+    UnloadSound(failSound);
+    UnloadSound(backgroundSound);
+    CloseAudioDevice();
+    CloseWindow();
     return 0;
 }
