@@ -214,13 +214,13 @@ bool Snake::ateFood(){
                 food.lastFoodColor = it->second;
                 food.foodItems.erase(it);
                 
-                if (areColorsEqual(it->second, YELLOW)) {
+                /*if (areColorsEqual(it->second, YELLOW)) {
                     PlaySound(yellowSound);
                 } else if (areColorsEqual(it->second, RED)){
                     PlaySound(redSound);
                 }else if (areColorsEqual(it->second, BLUE)) {
                     PlaySound(blueSound);
-                }
+                }*/
                    
                 else
                 return true;
