@@ -220,7 +220,7 @@ bool Snake::ateFood(){
                     PlaySound(redSound);
                 }else if (areColorsEqual(it->second, BLUE)) {
                     PlaySound(blueSound);
-                }*/
+                }
                    
                 else
                 return true;
