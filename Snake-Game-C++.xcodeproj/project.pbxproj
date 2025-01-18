@@ -15,8 +15,8 @@
 		BF1AD6362D24755D00EA1CD8 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
+			dstPath = usr/share/man/man1;
+			dstSubfolderSpec = 6;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 1;
@@ -70,8 +70,8 @@
 			children = (
 				BF1AD63B2D24755D00EA1CD8 /* main.cpp */,
 				BF0191902D3AD6DA009A5B0C /* sound1.wav */,
-				BF01918F2D3AD665009A5B0C /* sound3.wav */,
 				BF01918E2D3AD644009A5B0C /* sound2.wav */,
+				BF01918F2D3AD665009A5B0C /* sound3.wav */,
 				BF01918D2D3AD623009A5B0C /* background.wav */,
 				BF01918C2D3AD5F1009A5B0C /* fail.wav */,
 			);

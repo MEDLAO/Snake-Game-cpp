@@ -20,6 +20,11 @@ const int columns = screen_width / grid_size;
 const int rows = screen_height / grid_size;
 std::set<std::pair<int, int>> occupiedPositions;
 
+Sound yellowSound;
+Sound redSound;
+Sound blueSound;
+Sound failSound;
+
 
 // Custom hash function for std::pair
 struct pair_hash {
@@ -214,7 +219,7 @@ bool Snake::ateFood(){
                 food.lastFoodColor = it->second;
                 food.foodItems.erase(it);
                 
-                /*if (areColorsEqual(it->second, YELLOW)) {
+                if (areColorsEqual(it->second, YELLOW)) {
                     PlaySound(yellowSound);
                 } else if (areColorsEqual(it->second, RED)){
                     PlaySound(redSound);
@@ -244,11 +249,15 @@ int main(int argc, const char * argv[]) {
     InitAudioDevice();
     SetTargetFPS(60);
    
-    Sound yellowSound = LoadSound("sound1.wav");
-    Sound redSound = LoadSound("sound2.wav");
-    Sound blueSound = LoadSound("sound3.wav");
-    Sound failSound = LoadSound("fail.wav");
-    Sound backgroundSound = LoadSound("background.wav");
+    yellowSound = LoadSound("sound1.wav");
+    redSound = LoadSound("sound2.wav");
+    blueSound = LoadSound("sound3.wav");
+    failSound = LoadSound("fail.wav");
+    
+    Music backgroundMusic = LoadMusicStream("background.wav");
+    
+    PlayMusicStream(backgroundMusic);
+    
     
     float updateInterval = 0.1f; // Time between snake updates
     float elapsedTime = 0.0f; // Accumulator for delta time
@@ -256,6 +265,8 @@ int main(int argc, const char * argv[]) {
     food.generateFood();
     
     while (WindowShouldClose() == false) {
+        
+        UpdateMusicStream(backgroundMusic);
         
         float deltaTime = GetFrameTime();
         elapsedTime += deltaTime;
@@ -280,7 +291,8 @@ int main(int argc, const char * argv[]) {
     UnloadSound(redSound);
     UnloadSound(blueSound);
     UnloadSound(failSound);
-    UnloadSound(backgroundSound);
+    UnloadMusicStream(backgroundMusic);
+    
     CloseAudioDevice();
     CloseWindow();
     return 0;
