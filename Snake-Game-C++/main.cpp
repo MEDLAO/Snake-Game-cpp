@@ -24,6 +24,9 @@ Sound yellowSound;
 Sound redSound;
 Sound blueSound;
 Sound failSound;
+Music backgroundMusic;
+
+bool musicStarted = false;
 
 
 // Custom hash function for std::pair
@@ -78,6 +81,9 @@ public:
     
     void update(){
         handleInput();
+        if ((speedX != 0 || speedY != 0)) {
+            musicStarted = true;
+        }
         
         int newX = snake.front().first + speedX;
         int newY = snake.front().second + speedY;
@@ -218,16 +224,16 @@ bool Snake::ateFood(){
             } else {
                 food.lastFoodColor = it->second;
                 food.foodItems.erase(it);
-                
-                if (areColorsEqual(it->second, YELLOW)) {
+                // Play one of the three sounds randomly
+                int randomIndex = GetRandomValue(0, 2);
+                if (randomIndex == 0) {
                     PlaySound(yellowSound);
-                } else if (areColorsEqual(it->second, RED)){
+                } else if (randomIndex == 1) {
                     PlaySound(redSound);
-                }else if (areColorsEqual(it->second, BLUE)) {
+                } else if (randomIndex == 2) {
                     PlaySound(blueSound);
                 }
-                   
-                else
+                
                 return true;
             }
         }
@@ -256,8 +262,6 @@ int main(int argc, const char * argv[]) {
     
     Music backgroundMusic = LoadMusicStream("background.wav");
     
-    PlayMusicStream(backgroundMusic);
-    
     
     float updateInterval = 0.1f; // Time between snake updates
     float elapsedTime = 0.0f; // Accumulator for delta time
@@ -267,7 +271,9 @@ int main(int argc, const char * argv[]) {
     while (WindowShouldClose() == false) {
         
         UpdateMusicStream(backgroundMusic);
-        
+        if (musicStarted == true) {
+            PlayMusicStream(backgroundMusic);
+        }
         float deltaTime = GetFrameTime();
         elapsedTime += deltaTime;
         
