@@ -25,11 +25,7 @@
 
 /* Begin PBXFileReference section */
 		BF01918B2D37F1E6009A5B0C /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
-		BF01918C2D3AD5F1009A5B0C /* fail.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = fail.wav; sourceTree = "<group>"; };
-		BF01918D2D3AD623009A5B0C /* background.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = background.wav; sourceTree = "<group>"; };
-		BF01918E2D3AD644009A5B0C /* sound2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound2.wav; sourceTree = "<group>"; };
-		BF01918F2D3AD665009A5B0C /* sound3.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound3.wav; sourceTree = "<group>"; };
-		BF0191902D3AD6DA009A5B0C /* sound1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound1.wav; sourceTree = "<group>"; };
+		BF0191912D3EDC0D009A5B0C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		BF1AD6382D24755D00EA1CD8 /* Snake-Game-C++ */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Snake-Game-C++"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF1AD63B2D24755D00EA1CD8 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		BF7E588E2D24856900AD9B47 /* libraylib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libraylib.a; path = ../../../../../usr/local/Cellar/raylib/5.0/lib/libraylib.a; sourceTree = "<group>"; };
@@ -50,6 +46,7 @@
 		BF1AD62F2D24755D00EA1CD8 = {
 			isa = PBXGroup;
 			children = (
+				BF0191912D3EDC0D009A5B0C /* README.md */,
 				BF01918B2D37F1E6009A5B0C /* Media.xcassets */,
 				BF1AD63A2D24755D00EA1CD8 /* Snake-Game-C++ */,
 				BF1AD6392D24755D00EA1CD8 /* Products */,
@@ -69,11 +66,6 @@
 			isa = PBXGroup;
 			children = (
 				BF1AD63B2D24755D00EA1CD8 /* main.cpp */,
-				BF0191902D3AD6DA009A5B0C /* sound1.wav */,
-				BF01918E2D3AD644009A5B0C /* sound2.wav */,
-				BF01918F2D3AD665009A5B0C /* sound3.wav */,
-				BF01918D2D3AD623009A5B0C /* background.wav */,
-				BF01918C2D3AD5F1009A5B0C /* fail.wav */,
 			);
 			path = "Snake-Game-C++";
 			sourceTree = "<group>";
