@@ -266,6 +266,8 @@ int main(int argc, const char * argv[]) {
     float updateInterval = 0.1f; // Time between snake updates
     float elapsedTime = 0.0f; // Accumulator for delta time
     
+   
+    
     food.generateFood();
     
     while (WindowShouldClose() == false) {
@@ -280,7 +282,7 @@ int main(int argc, const char * argv[]) {
         if (elapsedTime >= updateInterval) {
             snake.update(); // Move the snake
             snake.checkAndGrow();
-            
+         
             elapsedTime = 0.0f; // Reset elapsed time
         }
         
@@ -289,7 +291,7 @@ int main(int argc, const char * argv[]) {
         ClearBackground(BLACK);
         snake.draw();
         food.draw();
-        
+    
         EndDrawing();
     }
     
