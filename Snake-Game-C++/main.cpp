@@ -119,12 +119,6 @@ public:
     
     void update(){
         handleInput();
-        
-        if (resetGame) {
-            reset();
-            return;
-        }
-        
         if ((speedX != 0 || speedY != 0)) {
             musicStarted = true;
         }
@@ -155,6 +149,10 @@ public:
         
         selfCollision();
         
+        if (resetGame) {
+            reset();
+            resetGame = false;
+        }
         
     }
     
@@ -176,7 +174,7 @@ public:
             speedY = -1;
         }
         
-        if (IsKeyPressed(KEY_SPACE)) {
+        if (IsKeyDown(KEY_SPACE)) {
             resetGame = true; // flag for reset logic
         }
     }
@@ -294,7 +292,6 @@ bool Snake::ateFood(){
 }
 
 void Snake::reset(){
-    resetGame = false;
     snake.clear();
     occupiedPositions.clear();
     init();
