@@ -27,6 +27,8 @@ Sound failSound;
 Music backgroundMusic;
 
 bool musicStarted = false;
+bool playerWon;
+bool resetGame;
 
 
 // Custom hash function for std::pair
@@ -36,6 +38,42 @@ struct pair_hash {
         return std::hash<T1>()(pair.first) ^ (std::hash<T2>()(pair.second) << 1);
     }
 };
+
+void displayFinalMessage(){
+    occupiedPositions.clear();
+    if (playerWon) {
+        
+        // Add coordinates for "YOU WIN" message
+        std::vector<std::pair<int, int>> youWinCoords = {
+            {5, 5}, {6, 5}, {7, 5}, // Y
+            {9, 5}, {10, 5}, {11, 5}, // O
+            {13, 5}, {14, 5}, {15, 5}, // U
+            {5, 7}, {6, 7}, {7, 7}, // W
+            {9, 7}, {10, 7}, {11, 7}, // I
+            {13, 7}, {14, 7}, {15, 7} // N
+        };
+        
+        for (const auto& coord : youWinCoords) {
+            occupiedPositions.insert(coord);
+        }
+    } else {
+        // Add coordinates for "GAME OVER" message
+        std::vector<std::pair<int, int>> gameOverCoords = {
+            {5, 10}, {6, 10}, {7, 10}, // G
+            {9, 10}, {10, 10}, {11, 10}, // A
+            {13, 10}, {14, 10}, {15, 10}, // M
+            {17, 10}, {18, 10}, {19, 10}, // E
+            {5, 12}, {6, 12}, {7, 12}, // O
+            {9, 12}, {10, 12}, {11, 12}, // V
+            {13, 12}, {14, 12}, {15, 12} // E R
+        };
+        
+        for (const auto& coord : gameOverCoords) {
+            occupiedPositions.insert(coord);
+        }
+    }
+}
+
 
 // Helper function to compare colors
 bool areColorsEqual(const Color& c1, const Color& c2){
@@ -81,6 +119,12 @@ public:
     
     void update(){
         handleInput();
+        
+        if (resetGame) {
+            reset();
+            return;
+        }
+        
         if ((speedX != 0 || speedY != 0)) {
             musicStarted = true;
         }
@@ -110,6 +154,8 @@ public:
         occupiedPositions.erase(tail);
         
         selfCollision();
+        
+        
     }
     
     void handleInput(){
@@ -128,6 +174,10 @@ public:
         else if (IsKeyDown(KEY_UP) && speedY != 1) {
             speedX = 0;
             speedY = -1;
+        }
+        
+        if (IsKeyPressed(KEY_SPACE)) {
+            resetGame = true; // flag for reset logic
         }
     }
     
@@ -152,6 +202,8 @@ public:
         // Iterate over the body excluding the head
         for (auto it = snake.begin() + 1; it != snake.end(); ++it) {
             if (head.first == it->first && head.second == it->second) {
+                playerWon = false;
+                displayFinalMessage();
                 reset();
             }
         }
@@ -242,6 +294,7 @@ bool Snake::ateFood(){
 }
 
 void Snake::reset(){
+    resetGame = false;
     snake.clear();
     occupiedPositions.clear();
     init();
