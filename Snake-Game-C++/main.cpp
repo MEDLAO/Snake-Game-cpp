@@ -28,7 +28,6 @@ Music backgroundMusic;
 
 bool musicStarted = false;
 bool resetGame;
-bool gameOver;
 
 
 // Custom hash function for std::pair
@@ -45,7 +44,6 @@ bool areColorsEqual(const Color& c1, const Color& c2){
     return c1.r == c2.r && c1.g == c2.g && c1.b == c2.b && c1.a == c2.a;
 }
 
-
 class Snake{
 private:
     std::deque<std::pair<int, int>> snake;
@@ -60,6 +58,7 @@ public:
     }
     
     void init(){
+        
         speedX = 0;
         speedY = 0;
         
@@ -116,7 +115,6 @@ public:
         
         if (resetGame) {
             reset();
-            resetGame = false;
         }
         
     }
@@ -165,8 +163,7 @@ public:
         // Iterate over the body excluding the head
         for (auto it = snake.begin() + 1; it != snake.end(); ++it) {
             if (head.first == it->first && head.second == it->second) {
-                DrawText("GAME OVER", screen_width / 2 - 100, screen_height / 2, 50, RED);
-                gameOver = true;
+                reset();
             }
         }
     }
@@ -260,6 +257,7 @@ void Snake::reset(){
     occupiedPositions.clear();
     init();
     food.reset();
+    resetGame = false;
 }
 
 
@@ -305,7 +303,6 @@ int main(int argc, const char * argv[]) {
         ClearBackground(BLACK);
         snake.draw();
         food.draw();
-        
     
         EndDrawing();
     }
